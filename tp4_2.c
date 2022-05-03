@@ -12,6 +12,7 @@ typedef struct Tarea Tarea;
 void cargarDatos(Tarea **Tar, int cantTareas);
 void controlDeRealizacion(Tarea **Tar, Tarea **TarRealizadas, int cantTareas);
 void mostrarTareas(Tarea **Tar, Tarea **TarRealizadas, int cantTareas);
+void LiberarMemoria(Tarea** listadoTareas, int cantTareas);
 
 int main(){
     int cantTareas;
@@ -28,10 +29,13 @@ int main(){
 
     controlDeRealizacion(Tareas, TareasRealizadas, cantTareas);
     mostrarTareas(Tareas, TareasRealizadas, cantTareas);
+
+    LiberarMemoria(Tareas,cantTareas);
+    LiberarMemoria(TareasRealizadas,cantTareas);
     
-    //hacer for con free tareas->descripcion
-    free(Tareas);
 }
+
+
 
 void cargarDatos(Tarea **Tar, int cantTareas){
     char *buffer;
@@ -100,4 +104,25 @@ void mostrarTareas(Tarea **Tar, Tarea **TarRealizadas, int cantTareas){
             printf("Duracion de la tarea: %i ", Tar[j]->Duracion);
         }                
     }   
+}
+
+void LiberarMemoria(Tarea** listadoTareas, int cantTareas){
+
+    for (short i = 0; i < cantTareas; i++)
+    {
+        if(listadoTareas[i] != NULL){
+            free(listadoTareas[i]->Descripcion);
+            // Se libera la memoria usada para guardar la descripcion de la tarea
+            free(listadoTareas[i]);
+            // Se libera la memoria reservada para cada struct Tarea siempre y cuando no apunte a NULL
+		    
+        } 
+
+        free(listadoTareas[i]);
+        // Se libera la memoria reservada para cada struct Tarea
+
+    }
+    free(listadoTareas);
+    // Se libera la memoria para el puntero doble.
+    
 }
